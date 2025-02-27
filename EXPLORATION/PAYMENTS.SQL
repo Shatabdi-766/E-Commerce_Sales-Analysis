@@ -1,0 +1,2 @@
+SELECT * FROM PAYMENTS
+limit 1000;
