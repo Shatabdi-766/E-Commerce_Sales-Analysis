@@ -830,6 +830,34 @@ df = pd.DataFrame(data, columns=['PERCENTAGE_INSTALLMENTS'])
 
 df
 ```
+--Output--
+| PERCENTAGE_INSTALLMENTS |
+|-------------------------|
+| 99.9981                 |
+
+## Percentage of Installments
+
+The **percentage of transactions using installments** is **99.9981%**.
+
+---
+
+## Interpretation
+- Nearly **100%** of transactions are processed using installment payments.
+- This indicates that installment payments are the **dominant payment method** for customers.
+
+---
+
+## Actionable Insight
+- **Promote Installment Options:**
+  - Highlight the availability and benefits of installment payments in marketing campaigns.
+  - Offer flexible installment plans to attract budget-conscious customers.
+- **Customer Education:**
+  - Educate customers about the advantages of using installments, such as spreading out payments over time.
+- **Fraud Prevention:**
+  - Monitor installment transactions for potential fraud or payment defaults.
+- **Payment Experience:**
+  - Ensure a seamless and user-friendly installment payment process to improve customer satisfaction.
+ 
 
 ## Count the number of customers from each state :
 
@@ -839,8 +867,6 @@ query = """
 SELECT CUSTOMER_STATE , COUNT(distinct CUSTOMER_UNIQUE_ID) AS CUSTOMER_COUNT
 FROM CUSTOMERS
 GROUP BY 1;
-
-
 """
 
 cur.execute(query)
@@ -851,8 +877,139 @@ df = pd.DataFrame(data, columns=['CUSTOMER_STATE','CUSTOMER_COUNT'])
 
 df
 ```
+--Output--
+| CUSTOMER_STATE | CUSTOMER_COUNT |
+|----------------|----------------|
+| AC             | 77             |
+| AL             | 401            |
+| AM             | 143            |
+| AP             | 67             |
+| BA             | 3277           |
+| CE             | 1313           |
+| DF             | 2075           |
+| ES             | 1964           |
+| GO             | 1952           |
+| MA             | 726            |
+| MG             | 11259          |
+| MS             | 694            |
+| MT             | 876            |
+| PA             | 949            |
+| PB             | 519            |
+| PE             | 1609           |
+| PI             | 482            |
+| PR             | 4882           |
+| RJ             | 12384          |
+| RN             | 474            |
+| RO             | 240            |
+| RR             | 45             |
+| RS             | 5277           |
+| SC             | 3534           |
+| SE             | 342            |
+| SP             | 40302          |
+| TO             | 273            |
+
+## State Customer Category 
+```sql
+with cte as (
+
+SELECT CUSTOMER_STATE , COUNT(distinct CUSTOMER_UNIQUE_ID) AS CUSTOMER_COUNT
+FROM CUSTOMERS
+GROUP BY 1
+)
+
+SELECT CUSTOMER_STATE , 
+CUSTOMER_COUNT,
+case 
+when CUSTOMER_COUNT>=11000 then 'Top-State-Customer'
+when CUSTOMER_COUNT>=3000 then 'Mid-Range-State-Customer'
+else 'Low-State-Customer-Category'
+end as State_Customer_Category
+from cte
+order by CUSTOMER_COUNT desc;
+```
+--Output--
+| CUSTOMER_STATE | CUSTOMER_COUNT | State_Customer_Category       |
+|----------------|----------------|------------------------------|
+| SP             | 40302          | Top-State-Customer           |
+| RJ             | 12384          | Top-State-Customer           |
+| MG             | 11259          | Top-State-Customer           |
+| RS             | 5277           | Mid-Range-State-Customer     |
+| PR             | 4882           | Mid-Range-State-Customer     |
+| SC             | 3534           | Mid-Range-State-Customer     |
+| BA             | 3277           | Mid-Range-State-Customer     |
+| DF             | 2075           | Low-State-Customer-Category  |
+| ES             | 1964           | Low-State-Customer-Category  |
+| GO             | 1952           | Low-State-Customer-Category  |
+| PE             | 1609           | Low-State-Customer-Category  |
+| CE             | 1313           | Low-State-Customer-Category  |
+| PA             | 949            | Low-State-Customer-Category  |
+| MT             | 876            | Low-State-Customer-Category  |
+| MA             | 726            | Low-State-Customer-Category  |
+| MS             | 694            | Low-State-Customer-Category  |
+| PB             | 519            | Low-State-Customer-Category  |
+| PI             | 482            | Low-State-Customer-Category  |
+| RN             | 474            | Low-State-Customer-Category  |
+| AL             | 401            | Low-State-Customer-Category  |
+| SE             | 342            | Low-State-Customer-Category  |
+| TO             | 273            | Low-State-Customer-Category  |
+| RO             | 240            | Low-State-Customer-Category  |
+| AM             | 143            | Low-State-Customer-Category  |
+| AC             | 77             | Low-State-Customer-Category  |
+| AP             | 67             | Low-State-Customer-Category  |
+| RR             | 45             | Low-State-Customer-Category  |
+
+![image](https://github.com/user-attachments/assets/bb54b6a0-6a33-4a01-b346-03f70d1d1e2c)
 
 
+## Short Analysis
+- **Top States:**
+  - **São Paulo (SP)** has the highest customer count (**40,302**), followed by **Rio de Janeiro (RJ)** with **12,384** customers and **Minas Gerais (MG)** with **11,259** customers.
+- **Mid-Range States:**
+  - States like **Rio Grande do Sul (RS)**, **Paraná (PR)**, and **Santa Catarina (SC)** have significant customer counts, ranging from **3,534** to **5,277**.
+- **Low-Count States:**
+  - States like **Roraima (RR)**, **Amapá (AP)**, and **Acre (AC)** have very low customer counts, indicating limited market penetration.
+
+---
+
+## Actionable Insight
+- **Focus on High-Demand States:**
+  - Prioritize marketing and logistics efforts in high-demand states like **SP**, **RJ**, and **MG**.
+  - Ensure sufficient inventory and resources to meet customer needs in these regions.
+- **Expand in Mid-Range States:**
+  - Run targeted campaigns in states like **RS**, **PR**, and **SC** to boost customer engagement and sales.
+- **Explore Low-Count States:**
+  - Investigate opportunities to expand into low-count states like **RR**, **AP**, and **AC**.
+  - Tailor marketing strategies to address regional preferences and challenges.
+- **Customer Segmentation:**
+  - Use state-level data to segment customers and tailor marketing strategies based on regional preferences.
+- **Logistics Optimization:**
+  - Optimize delivery and logistics operations to serve customers efficiently across all states.
+- **Localized Marketing:**
+  - Run region-specific campaigns to attract customers in underperforming states.
+
+## Number Of State Customer Category
+```sql
+select State_Customer_Category, 
+COUNT(State_Customer_Category) as Number_of_State_Customer_Category
+from cte2
+group by State_Customer_Category
+order by Number_of_State_Customer_Category desc;
+```
+--Output--
+| State_Customer_Category       | Number_of_State_Customer_Category |
+|------------------------------|-----------------------------------|
+| Low-State-Customer-Category  | 20                                |
+| Mid-Range-State-Customer     | 4                                 |
+| Top-State-Customer           | 3                                 |
+
+## Short Analysis
+- **Low-State-Customer-Category:**
+  - **20 states** fall into this category, indicating limited customer presence in these regions.
+- **Mid-Range-State-Customer:**
+  - **4 states** have a moderate customer base, suggesting potential for growth.
+- **Top-State-Customer:**
+  - **3 states** dominate in terms of customer count, representing the highest market penetration.
+---
 
 ## Calculate the number of orders per month in 2018.
 
@@ -876,8 +1033,65 @@ df = pd.DataFrame(data, columns=['ORDER_MONTH','ORDER_COUNT'])
 
 df
 ```
+--Output--
+| ORDER_MONTH | ORDER_COUNT |
+|-------------|-------------|
+| January     | 43614       |
+| March       | 43266       |
+| April       | 41634       |
+| May         | 41238       |
+| February    | 40368       |
+| August      | 39072       |
+| July        | 37752       |
+| June        | 37002       |
+| September   | 96          |
+| October     | 24          |
 
+![image](https://github.com/user-attachments/assets/c1730b7f-f319-4150-9d07-e8817e3f1750)
 
+## Monthly Order Analysis
+
+Below is the breakdown of **monthly order volumes** and key observations:
+
+---
+
+## Key Observations
+1. **Peak Months:**
+   - **January:** 43,614 orders
+   - **March:** 43,266 orders
+   - **April:** 41,634 orders
+   - These months saw the **highest order volumes**, indicating strong customer activity in the early months of the year.
+
+2. **Steady Sales:**
+   - From **February to August**, there is a **consistent decline** in order count, with **August** still maintaining a high volume of **39,072 orders**.
+
+3. **Low Activity:**
+   - **September:** 96 orders
+   - **October:** 24 orders
+   - These months show **drastically lower orders**, which could be due to:
+     - **Incomplete data** for these months.
+     - **Seasonal demand shifts** impacting customer behavior.
+
+---
+
+## Business Insight
+- **Focus on Peak Months:**
+  - Leverage the high customer activity in **January, March, and April** for targeted marketing campaigns and promotions.
+  - Ensure sufficient inventory and resources to meet the increased demand during these months.
+- **Investigate Low Activity:**
+  - Analyze the reasons behind the drop in orders during **September and October**:
+    - Check for data collection issues or gaps.
+    - Assess whether seasonal factors (e.g., holidays, weather) are influencing customer behavior.
+- **Steady Sales Strategy:**
+  - Maintain consistent marketing and operational efforts from **February to August** to sustain sales momentum.
+  - Identify opportunities to boost sales during months with declining order counts.
+- **Seasonal Adjustments:**
+  - Plan seasonal promotions or discounts for months with lower activity to attract customers.
+  - Adjust inventory and staffing levels based on monthly demand trends.
+- **Data-Driven Decisions:**
+  - Use monthly order data to forecast demand, optimize inventory, and allocate resources effectively.
+  
+---
 
 ## Find the average number of products per order, grouped by customer city.
 
@@ -900,7 +1114,6 @@ ON customers.customer_id = COUNT_PER_ORDER.CUSTOMER_ID
 GROUP BY 1
 ORDER BY 2 DESC;
 
-
 """
 
 cur.execute(query)
@@ -911,7 +1124,25 @@ df = pd.DataFrame(data, columns=['CUSTOMER_CITY','AVERAGE_ORDERS'])
 
 df
 ```
+## Average Orders by Customer City  
 
+| CUSTOMER_CITY        | AVERAGE_ORDERS |
+|----------------------|---------------|
+| padre carvalho      | 210.00        |
+| celso ramos        | 195.00        |
+| datas              | 180.00        |
+| candido godoi      | 180.00        |
+| matias olimpio     | 150.00        |
+| cidelandia        | 120.00        |
+| curralinho        | 120.00        |
+| picarra          | 120.00        |
+| morro de sao paulo | 120.00        |
+| teixeira soares   | 120.00        |
+
+- **Padre Carvalho (210.00 orders)** leads in average orders per customer.  
+- **Celso Ramos (195.00 orders)** follows closely behind.  
+- Several cities, including **Cidelandia, Curralinho, and Teixeira Soares (120.00 orders each)**, share similar order patterns.  
+- High average orders suggest **strong customer engagement** in these locations.
 
 ## Calculate the percentage of total revenue contributed by each product category.
 
@@ -924,11 +1155,7 @@ INNER JOIN order_items oi ON pp.product_id = oi.product_id
 INNER JOIN payments p ON oi.order_id = p.order_id
 GROUP BY pp.product_category
 ORDER BY 2 DESC;
-
-
-
 """
-
 cur.execute(query)
 
 data = cur.fetchall()
@@ -937,6 +1164,33 @@ df = pd.DataFrame(data, columns=['CATEGORY','SALES_PERCENTAGE'])
 
 df
 ```
+## Sales Percentage by Category  
+
+| Category                      | Sales Percentage (%) |
+|--------------------------------|----------------------|
+| Bed Table Bath                | 320.93               |
+| Health Beauty                 | 310.59               |
+| Computer Accessories          | 297.08               |
+| Furniture Decoration          | 268.01               |
+| Watches Present               | 267.83               |
+| PC Gamer                      | 0.41                 |
+| House Comfort 2               | 0.32                 |
+| CDs Music DVDs                | 0.22                 |
+| Fashion Children's Clothing   | 0.15                 |
+| Insurance and Services        | 0.06                 |
+
+  ### **Top Categories (Highest Sales Percentage)**  
+- **Bed Table Bath (320.93%)** leads the sales distribution.  
+- **Health & Beauty (310.59%)** and **Computer Accessories (297.08%)** follow closely.  
+- **Furniture Decoration (268.01%)** and **Watches Present (267.83%)** also show significant sales impact.  
+
+### **Lowest Performing Categories**  
+- **PC Gamer (0.41%)**, **House Comfort 2 (0.32%)**, and **CDs Music DVDs (0.22%)** have minimal sales.  
+- **Fashion Children's Clothing (0.15%)** and **Insurance & Services (0.06%)** contribute the least.  
+
+**Insight:** The highest-selling categories drive overall revenue, while niche categories have minimal impact.  
+---
+
 ## Identify the correlation between product price and the number of times a product has been purchased.
 
 ```python
@@ -948,9 +1202,6 @@ from products
 inner join order_items
 on products.product_id = order_items.product_id
 group by 1;
-
-
-
 """
 
 cur.execute(query)
@@ -961,7 +1212,48 @@ df = pd.DataFrame(data, columns=['CATEGORY','ORDER_COUNT','PRICE'])
 
 df
 ```
-# # Calculate the total revenue generated by each seller, and rank them by revenue.
+## Order Count and Price by Category  
+
+| Category                      | Order Count | Average Price (USD) |
+|--------------------------------|------------|---------------------|
+| Health Beauty                 | 290,100    | 130.16              |
+| Sport Leisure                 | 259,230    | 114.34              |
+| Cool Stuff                    | 113,880    | 167.36              |
+| Computer Accessories          | 234,810    | 116.51              |
+| Watches Present               | 179,730    | 201.14              |
+| CITTE and Uphack Furniture    | 1,140      | 114.95              |
+| Hygiene Diapers               | 1,170      | 40.19               |
+| Flowers                       | 990        | 33.64               |
+| Insurance and Services        | 60        | 141.64              |
+| CDs Music DVDs                | 420        | 52.14               |
+
+
+
+```python
+import numpy as np
+arr1 = df['ORDER_COUNT']
+arr2 = df['PRICE']
+a = np.corrcoef(arr1,arr2)
+a
+print('The correlation between price and the number of times a product has been purchased ',a[0][1])
+```
+- The correlation between price and the number of times a product has been purchased  -0.10631514167157564
+
+## Correlation Between Price and Purchase Frequency  
+
+- **Correlation Value:** -0.1063  
+  - This indicates a **weak negative correlation** between price and the number of times a product has been purchased.  
+
+### Interpretation:  
+- As **price increases, purchase frequency tends to slightly decrease**, but the effect is not strong.  
+- The weak correlation suggests that **price is not the primary factor** influencing purchase decisions—other factors like product category, brand, or demand play a significant role.  
+
+### Key Insight:  
+- While **lower-priced products** may sell in higher volumes, premium or niche products can still attract buyers at higher prices.  
+- Businesses should focus on **pricing strategies per category** rather than assuming a direct relationship between price and sales.
+
+
+## Calculate the total revenue generated by each seller, and rank them by revenue.
 
 ```python
 query = """
@@ -984,13 +1276,23 @@ cur.execute(query)
 data = cur.fetchall()
 
 df = pd.DataFrame(data, columns=['SELLER_ID', 'REVENUE', 'RANK_REVENUE'])
-
-
 df
 ```
+![image](https://github.com/user-attachments/assets/197d87db-502d-4cc7-a0b8-3d24ad7fe569)
+
+## Seller Revenue Analysis  
+
+- **Top Seller:** Earned **$12.68M**, significantly higher than others.  
+- **Top 5 Sellers:** Generated **over $7M each**, indicating strong dominance in sales.  
+- **Revenue Gap:** A major disparity exists between **top-ranked and lowest-ranked sellers**.  
+- **Lowest Seller Revenue:** Only **$305.50**, suggesting some sellers struggle with sales.  
+
+### Key Insight:  
+- A **small group of sellers drive the majority of revenue**, while many have minimal earnings.  
+- Strategies like **seller support, promotions, or improved visibility** could help smaller sellers compete.  
 
 
-# # Calculate the moving average of order values for each customer over their order history.
+## Calculate the moving average of order values for each customer over their order history.
 ```python
 query = """
 
@@ -1020,16 +1322,35 @@ FROM
     PaymentData
 ORDER BY 
     order_purchase_timestamp;
-
-
 """
-
 cur.execute(query)
 data = cur.fetchall()
 
 df = pd.DataFrame(data, columns=['CUSTOMER_ID', 'ORDER_PURCHASE_TIMESTAMP', 'PAYMENT', 'MOVING_AVERAGE'])
 df
 ```
+--Output--
+| CUSTOMER_ID                        | ORDER_PURCHASE_TIMESTAMP   | PAYMENT  | MOVING_AVERAGE |
+|------------------------------------|---------------------------|----------|----------------|
+| 08c5351a6aca1c1589a38f244edeee9d   | 2016-09-04 21:15:19       | 136.23   | 136.23         |
+| 683c54fc24d40ee9f8a6fc179fd9856c   | 2016-09-05 00:15:34       | 75.06    | 75.06          |
+| 622e13439d6b5a0b486c435618b2679e   | 2016-09-13 15:24:19       | 40.95    | 40.95          |
+| b106b360fe2ef8849fbbd056f777b4d5   | 2016-10-02 22:07:52       | 109.34   | 109.34         |
+| 355077684019f7f60a031656bd7262b8   | 2016-10-03 09:44:50       | 45.46    | 45.46          |
+| 2823ffda607a2316375088e0d00005ec   | 2018-09-29 09:13:03       | 137.03   | 137.03         |
+| bf6181a85bbb4115736c0a8db1a53be3   | 2018-10-01 15:30:09       | 80.38    | 80.38          |
+| 4c2ec60c29d10c34bd49cb88aa85cfc4   | 2018-10-03 18:55:29       | 197.55   | 197.55         |
+| 856336203359aa6a61bf3826f7d84c49   | 2018-10-16 20:16:02       | 222.03   | 222.03         |
+| a4b417188addbc05b26b72d5e44837a1   | 2018-10-17 17:30:18       | 89.71    | 89.71          |
+
+### Key Insights:
+- **Payment Trends:** The payments range from **$40.95 to $222.03**.  
+- **Stable Moving Average:** The moving averages match the individual payments, indicating no fluctuations.  
+- **Customer Activity:** Payments were made over a span of **2 years** (2016–2018).
+
+![image](https://github.com/user-attachments/assets/605d1f63-a18a-4686-9498-ade00cff95a7)
+
+
 ## Calculate the cumulative sales per month for each year.
 ```python
 query = """
@@ -1055,8 +1376,6 @@ SELECT
     ROUND(SUM(PAYMENT) OVER (ORDER BY YEAR, MONTH), 3) AS CUMULATIVE_SALES
 FROM 
     MonthlyPayment;
-
-
 """
 
 cur.execute(query)
@@ -1065,6 +1384,40 @@ data = cur.fetchall()
 df = pd.DataFrame(data, columns=['MONTH', 'YEAR', 'PAYMENT', 'CUMULATIVE_SALES'])
 df
 ```
+![image](https://github.com/user-attachments/assets/a28e3dfd-7351-4856-8ec8-15cbd741f190)
+
+## Cumulative Sales by Year and Month
+
+The image titled **"Cumulative Sales by Year and Month"** provides a visual representation of sales trends over time. Below is an analysis based on the provided content:
+
+---
+
+## Key Observations
+1. **Year-Month Data:**
+   - The image likely contains a line or bar chart showing cumulative sales for each month across multiple years.
+   - This allows for tracking sales growth and identifying seasonal trends.
+
+2. **Trend Analysis:**
+   - **Peak Months:** Identify months with the highest cumulative sales, indicating periods of strong customer activity.
+   - **Growth Trends:** Observe whether sales are increasing, decreasing, or remaining stable over time.
+   - **Seasonality:** Detect patterns such as higher sales during specific months (e.g., holiday seasons).
+
+---
+
+## Business Insight
+- **Focus on Peak Periods:**
+  - Leverage high-sales months for targeted marketing campaigns and promotions.
+  - Ensure sufficient inventory and resources to meet increased demand during these periods.
+- **Address Low-Performing Months:**
+  - Investigate reasons for lower sales in specific months and implement strategies to boost performance.
+  - Offer discounts or promotions during off-peak months to attract customers.
+- **Forecasting and Planning:**
+  - Use cumulative sales data to forecast future demand and plan inventory, staffing, and marketing efforts.
+- **Seasonal Adjustments:**
+  - Adjust strategies based on seasonal trends to maximize revenue throughout the year.
+- **Data-Driven Decisions:**
+  - Continuously monitor sales trends to identify opportunities for growth and areas for improvement.
+
 ## Calculate the year-over-year growth rate of total sales.
 ```
 query = """
@@ -1106,6 +1459,57 @@ data = cur.fetchall()
 df = pd.DataFrame(data, columns=['YEAR','YEAR_OVER_YEAR_GROWTH'])
 df
 ```
+# Analysis of Year-over-Year Growth Data
+
+The dataset provides the **yearly growth percentage** between consecutive years. Here's a detailed analysis:
+
+---
+
+--Output--
+
+| Year | Year-over-Year Growth (%) |
+|------|---------------------------|
+| 2016 | NaN                       |
+| 2017 | 12113.0                   |
+| 2018 | 20.0                      |
+
+---
+
+### Key Insights:
+
+1. **2016**: 
+   - The **year-over-year growth is NaN (Not a Number)**. This is expected since there is no previous year to compare to. This could be the starting point of the dataset.
+
+2. **2017**: 
+   - The growth rate is **12113%**, which is an extraordinarily high value. This indicates that the sales or whatever metric is being measured grew dramatically compared to 2016. This could indicate a large increase in business activity, perhaps due to a new product launch, a significant marketing push, or an acquisition.
+
+3. **2018**: 
+   - The growth rate is **20%**, which is a much more moderate but still healthy increase compared to 2017. This suggests that while growth slowed down, it remained strong. A 20% increase indicates continued success, though at a slower pace.
+
+---
+
+### Possible Implications:
+
+1. **2016-2017 Surge**: 
+   - The massive increase in 2017 (12113%) likely signifies an exceptional event. This could be due to a specific business decision or external factors that caused a sharp spike in performance.
+   - Such extreme growth is rare, and while it's positive, it could be an anomaly or something that is not sustainable in the long term.
+
+2. **2017-2018 Stabilization**:
+   - The decrease in growth rate from 12113% to 20% between 2017 and 2018 is a normal pattern after a huge surge. Often, businesses experience a correction phase where growth stabilizes after a massive rise.
+   - However, maintaining a 20% growth rate suggests a healthy business trajectory, though it may require identifying new strategies to boost growth again or maintain this level.
+
+---
+
+### Recommendations:
+
+- **Understand the Causes of the 2017 Surge**: Investigate what happened in 2017 to cause such an extreme increase (e.g., new market entry, strategic changes, external events) and assess whether this can be replicated or leveraged.
+  
+- **Sustain Growth**: Focus on strategies to maintain or improve the 20% growth rate from 2018 onward. Look for areas of innovation, customer satisfaction, or market expansion to keep momentum going.
+  
+- **Set Realistic Growth Expectations**: After an exceptional growth year, aim for more gradual, sustainable growth instead of trying to replicate extraordinary jumps. 
+
+This data should be seen in context with other performance metrics to get a fuller picture of the business's health.
+
 
 ## Calculate the retention rate of customers, defined as the percentage of customers who make another purchase within 6 months of their first purchase.
 
@@ -1162,6 +1566,55 @@ data = cur.fetchall()
 df = pd.DataFrame(data, columns=['SIX_MONTH_RETENTION_RATE'])
 df
 ```
+
+### Calculate the Retention Rate of Customers
+
+The **Six-Month Retention Rate** is defined as the percentage of customers who make another purchase within **6 months** of their **first purchase**. Below is the analysis for the provided retention data.
+
+---
+
+### Data Overview:
+
+| SIX_MONTH_RETENTION_RATE |
+|--------------------------|
+| 0.0000                   |
+
+---
+
+### Key Insights:
+
+1. **Retention Rate of 0**: 
+   - The **Six-Month Retention Rate** is **0.0000**, indicating that **no customers** returned to make a subsequent purchase within the 6-month window after their first purchase.
+
+---
+
+### Possible Implications:
+
+1. **High Customer Churn**:
+   - A **0% retention rate** typically suggests a very high churn rate, where customers do not return for repeat purchases. This could be due to various factors like dissatisfaction, lack of incentives, or poor customer experience.
+
+2. **Lack of Retention Programs**:
+   - If no customers are retained, it might imply that the business has no active retention strategies or that these strategies are ineffective.
+
+---
+
+### Recommendations:
+
+1. **Investigate the Causes**: 
+   - Perform a deeper analysis of customer feedback, purchase behavior, and reasons for churn to understand why customers are not returning.
+   
+2. **Develop Retention Strategies**:
+   - Implement loyalty programs, targeted offers, personalized marketing, and improved customer service to encourage repeat purchases.
+
+3. **Track Retention Over Time**:
+   - Monitor the retention rate regularly to assess the impact of retention efforts and refine strategies as needed.
+
+4. **Data Validation**:
+   - Verify the accuracy of the data to ensure that it correctly reflects actual customer retention behavior.
+
+---
+
+
 ## Identify the top 3 customers who spent the most money in each year.
 
 ```python
@@ -1205,6 +1658,47 @@ df = pd.DataFrame(data, columns=['CUSTOMER_ID', 'YEARS', 'PAYMENT', 'PAYMENT_RAN
 
 print(df)
 ```
+# Top 3 Customers by Year Based on Payment
+
+Below is the analysis of the **top 3 customers** who spent the most money in each year, based on the provided data.
+
+---
+
+### 2016
+| Customer ID                                | Payment   | Payment Rank |
+|--------------------------------------------|-----------|--------------|
+| a9dc96b027d1252bbac0a9b72d837fc6           | 42,706.5  | 1            |
+| 1d34ed25963d5aae4cf3d7f3a4cda173           | 42,022.2  | 2            |
+| 4a06381959b6670756de02e07b83815f           | 36,833.4  | 3            |
+
+---
+
+### 2017
+| Customer ID                                | Payment   | Payment Rank |
+|--------------------------------------------|-----------|--------------|
+| 1617b1357756262bfa56ab541c47bc16           | 409,922.4 | 1            |
+| c6e2731c5b391845f6800c97401a43a9           | 207,879.3 | 2            |
+| 3fd6777bbce08a352fddd04e4a7cc8f6           | 201,799.8 | 3            |
+
+---
+
+### 2018
+| Customer ID                                | Payment   | Payment Rank |
+|--------------------------------------------|-----------|--------------|
+| ec5b2ba62e574342386871631fafd3fc           | 218,246.4 | 1            |
+| f48d464a0baaea338cb25f816991ab1f           | 207,666.3 | 2            |
+| e0a2412720e9ea4f26c1ac985f6a7358           | 144,283.2 | 3            |
+
+---
+![image](https://github.com/user-attachments/assets/ed7fe025-df27-4062-8a49-52894c7dbf96)
+
+### Insights:
+- The **top spender** in 2016 was **Customer a9dc96b027d1252bbac0a9b72d837fc6**, with a payment of **42,706.5**.
+- The **top spender** in 2017 was **Customer 1617b1357756262bfa56ab541c47bc16**, with a payment of **409,922.4**.
+- The **top spender** in 2018 was **Customer ec5b2ba62e574342386871631fafd3fc**, with a payment of **218,246.4**.
+
+These customers were the top 3 spenders in each year, contributing the highest amounts in their respective periods.
+
 
 
 
