@@ -250,6 +250,35 @@ count(order_status) as Number_of_Status
  FROM ORDERS
  group by 1;
 ```
+#### Order Status Summary
+
+This table provides a breakdown of order statuses and their corresponding counts.
+
+| **Order Status**  | **Number of Orders** |
+|-------------------|----------------------|
+| Delivered        | 578,868              |
+| Invoiced         | 1,884                |
+| Shipped          | 6,642                |
+| Processing       | 1,806                |
+| Unavailable      | 3,654                |
+| Canceled         | 3,750                |
+| Created          | 30                   |
+| Approved         | 12                   |
+
+---
+## Key Insights:
+- **Majority of orders (578,868) were successfully delivered**, indicating an efficient order fulfillment process.
+- **6,642 orders were shipped but not yet delivered**, suggesting possible transit delays.
+- **3,750 orders were canceled**, highlighting potential customer dissatisfaction or stock issues.
+- **3654 orders were marked as "unavailable"**, requiring further investigation into supply chain or inventory issues.
+- **Only 12 orders were in the "approved" stage**, meaning most orders move quickly beyond initial approval.
+---
+---
+## Actionable Recommendations:
+- **Analyze cancellation reasons** to reduce lost sales.
+- **Investigate "unavailable" orders** to optimize stock management.
+- **Monitor shipping delays** to improve logistics efficiency.
+---
 
 ```sql
 SELECT * FROM PAYMENTS;
@@ -355,6 +384,346 @@ Below is the breakdown of **payment types** and their respective counts:
 ```sql
 SELECT * FROM products;
 ```
+#### Product Details Summary
+
+This table provides an overview of product attributes, including category, description length, photo quantity, and dimensions.
+
+| **Product ID**                        | **Category**     | **Name Length** | **Description Length** | **Photos Qty** | **Weight (g)** | **Length (cm)** | **Height (cm)** | **Width (cm)** |
+|---------------------------------------|-----------------|----------------|----------------------|---------------|--------------|-------------|-------------|------------|
+| 1e9e8ef04dbcff4541ed26657ea517e5      | Perfumery       | 40             | 287                  | 1             | 225          | 16          | 10          | 14         |
+| 3aa071139cb16b67ca9e5dea641aaa2f      | Art            | 44             | 276                  | 1             | 1000         | 30          | 18          | 20         |
+| 96bd76ec8810374ed1b65e291975717f      | Sport Leisure  | 46             | 250                  | 1             | 154          | 18          | 9           | 15         |
+| cef67bcfe19066a932b7673e239eb23d      | Babies         | 27             | 261                  | 1             | 371          | 26          | 4           | 26         |
+
+---
+## Key Insights:
+- **Product name length varies**, with sport leisure items having the longest names (46 characters).
+- **Product descriptions range from 250 to 287 characters**, which could impact customer engagement.
+- **All products listed have a single photo**, suggesting potential for improvement in visual presentation.
+- **Weight differences** are notable, with art products being the heaviest at **1,000g**.
+- **Size variations** highlight different storage and shipping requirements.
+---
+---
+## Actionable Recommendations:
+- **Optimize product descriptions** for SEO and customer engagement.
+- **Consider adding more product images** to enhance visual appeal.
+- **Review packaging strategies** for heavier or bulkier products.
+---
+
+## Number of Product Category
+```sql
+SELECT product_category,
+count(product_category) number_of_product_category 
+FROM products
+group by 1
+order by 2 desc;
+```
+#### Product Category Distribution
+
+| Product Category                                           | Number of Products |
+|------------------------------------------------------------|--------------------|
+| Bed Table Bath                                            | 18,174            |
+| Sport Leisure                                            | 17,202            |
+| Furniture Decoration                                      | 15,942            |
+| Health Beauty                                            | 14,664            |
+| Housewares                                               | 14,010            |
+| Automotive                                               | 11,400            |
+| Computer Accessories                                     | 9,834             |
+| Toys                                                    | 8,466             |
+| Watches Present                                         | 7,974             |
+| Telephony                                               | 6,804             |
+| Babies                                                 | 5,514             |
+| Perfumery                                              | 5,208             |
+| Fashion Bags and Accessories                           | 5,094             |
+| Stationary Store                                       | 5,094             |
+| Cool Stuff                                             | 4,734             |
+| Garden Tools                                           | 4,518             |
+| Pet Shop                                              | 4,314             |
+| Electronics                                           | 3,102             |
+| Construction Tools Construction                        | 2,400             |
+| Home Appliances                                       | 2,220             |
+| Bags Accessories                                      | 2,094             |
+| Games Consoles                                        | 1,902             |
+| Furniture Office                                      | 1,854             |
+| Musical Instruments                                   | 1,734             |
+| Electrostile                                         | 1,386             |
+| Casa Construcao                                      | 1,350             |
+| General Interest Books                               | 1,296             |
+| Fashion Calcados                                     | 1,038             |
+| Room Furniture                                       | 936               |
+| Climatization                                        | 744               |
+| Technical Books                                      | 738               |
+| Fixed Telephony                                      | 696               |
+| House Comfort                                        | 666               |
+| Market Place                                         | 624               |
+| Drink Foods                                          | 624               |
+| Fashion Men's Clothing                               | 570               |
+| Furniture Kitchen Service Area Dinner and Garden    | 564               |
+| Signalization and Safety                            | 558               |
+| Construction Security Tools                         | 546               |
+| Electrices 2                                         | 540               |
+| Construction Tools Garden                           | 528               |
+| Foods                                               | 492               |
+| Drinks                                              | 486               |
+| Construction Tools Illumination                     | 468               |
+| Agro Industria e Comercio                           | 444               |
+| Industry Commerce and Business                      | 408               |
+| Christmas Articles                                  | 390               |
+| Audio                                               | 348               |
+| Art                                                 | 330               |
+| Fashion Underwear and Beach Fashion                 | 318               |
+| Blu Ray DVDs                                        | 288               |
+| Furniture                                           | 270               |
+| Construction Tools Tools                            | 234               |
+| Imported Books                                      | 186               |
+| House Pastals Oven and Cafe                         | 186               |
+| PCs                                                 | 180               |
+| Cine Photo                                          | 168               |
+| Fashion Women's Clothing                            | 162               |
+| Song                                                | 162               |
+| Party Articles                                      | 156               |
+| Fashion Sport                                       | 114               |
+| Arts and Crafts                                     | 114               |
+| Flowers                                            | 84                |
+| Hygiene Diapers                                     | 72                |
+| La Cuisine                                         | 60                |
+| Kitchen Portable and Food Coach                    | 60                |
+| CITTE and Uphack Furniture                         | 60                |
+| Image Import Tablets                               | 54                |
+| Fashion Children's Clothing                        | 30                |
+| House Comfort 2                                     | 30                |
+| PC Gamer                                           | 18                |
+| Insurance and Services                             | 12                |
+| CDs, Music, DVDs                                   | 6                 |
+| NULL                                               | 0                 |
+
+## Distribute Categories
+```sql
+WITH cte AS (
+    SELECT product_category,
+           COUNT(product_category) AS number_of_product_category  
+    FROM products 
+    GROUP BY product_category
+),  
+
+cte2 AS (
+    SELECT product_category, 
+           number_of_product_category, 
+           CASE  
+               WHEN number_of_product_category >= 6000 THEN 'Top Product Categories'  
+               WHEN number_of_product_category >= 1000 THEN 'Mid-Tier Product Categories'  
+               WHEN number_of_product_category >= 115 THEN 'Niche Product Categories'  
+               ELSE 'Rare Product Categories'  
+           END AS Categories  
+    FROM cte   
+)  
+
+SELECT * FROM cte2  
+ORDER BY number_of_product_category DESC;
+```
+#### Product Category Distribution
+
+| Product Category                                           | Number of Products | Category Type                  |
+|------------------------------------------------------------|--------------------|--------------------------------|
+| Bed Table Bath                                            | 18,174            | Top Product Categories        |
+| Sport Leisure                                            | 17,202            | Top Product Categories        |
+| Furniture Decoration                                      | 15,942            | Top Product Categories        |
+| Health Beauty                                            | 14,664            | Top Product Categories        |
+| Housewares                                               | 14,010            | Top Product Categories        |
+| Automotive                                               | 11,400            | Top Product Categories        |
+| Computer Accessories                                     | 9,834             | Top Product Categories        |
+| Toys                                                    | 8,466             | Top Product Categories        |
+| Watches Present                                         | 7,974             | Top Product Categories        |
+| Telephony                                               | 6,804             | Top Product Categories        |
+| Babies                                                 | 5,514             | Mid-Tier Product Categories   |
+| Perfumery                                              | 5,208             | Mid-Tier Product Categories   |
+| Fashion Bags and Accessories                           | 5,094             | Mid-Tier Product Categories   |
+| Stationary Store                                       | 5,094             | Mid-Tier Product Categories   |
+| Cool Stuff                                             | 4,734             | Mid-Tier Product Categories   |
+| Garden Tools                                           | 4,518             | Mid-Tier Product Categories   |
+| Pet Shop                                              | 4,314             | Mid-Tier Product Categories   |
+| Electronics                                           | 3,102             | Mid-Tier Product Categories   |
+| Construction Tools Construction                        | 2,400             | Mid-Tier Product Categories   |
+| Home Appliances                                       | 2,220             | Mid-Tier Product Categories   |
+| Bags Accessories                                      | 2,094             | Mid-Tier Product Categories   |
+| Games Consoles                                        | 1,902             | Mid-Tier Product Categories   |
+| Furniture Office                                      | 1,854             | Mid-Tier Product Categories   |
+| Musical Instruments                                   | 1,734             | Mid-Tier Product Categories   |
+| Electrostile                                         | 1,386             | Mid-Tier Product Categories   |
+| Casa Construcao                                      | 1,350             | Mid-Tier Product Categories   |
+| General Interest Books                               | 1,296             | Mid-Tier Product Categories   |
+| Fashion Calcados                                     | 1,038             | Mid-Tier Product Categories   |
+| Room Furniture                                       | 936               | Niche Product Categories      |
+| Climatization                                        | 744               | Niche Product Categories      |
+| Technical Books                                      | 738               | Niche Product Categories      |
+| Fixed Telephony                                      | 696               | Niche Product Categories      |
+| House Comfort                                        | 666               | Niche Product Categories      |
+| Market Place                                         | 624               | Niche Product Categories      |
+| Drink Foods                                          | 624               | Niche Product Categories      |
+| Fashion Men's Clothing                               | 570               | Niche Product Categories      |
+| Furniture Kitchen Service Area Dinner and Garden    | 564               | Niche Product Categories      |
+| Signalization and Safety                            | 558               | Niche Product Categories      |
+| Construction Security Tools                         | 546               | Niche Product Categories      |
+| Electrices 2                                         | 540               | Niche Product Categories      |
+| Construction Tools Garden                           | 528               | Niche Product Categories      |
+| Foods                                               | 492               | Niche Product Categories      |
+| Drinks                                              | 486               | Niche Product Categories      |
+| Construction Tools Illumination                     | 468               | Niche Product Categories      |
+| Agro Industria e Comercio                           | 444               | Niche Product Categories      |
+| Industry Commerce and Business                      | 408               | Niche Product Categories      |
+| Christmas Articles                                  | 390               | Niche Product Categories      |
+| Audio                                               | 348               | Niche Product Categories      |
+| Art                                                 | 330               | Niche Product Categories      |
+| Fashion Underwear and Beach Fashion                 | 318               | Niche Product Categories      |
+| Blu Ray DVDs                                        | 288               | Niche Product Categories      |
+| Furniture                                           | 270               | Niche Product Categories      |
+| Construction Tools Tools                            | 234               | Niche Product Categories      |
+| Imported Books                                      | 186               | Niche Product Categories      |
+| House Pastals Oven and Cafe                         | 186               | Niche Product Categories      |
+| PCs                                                 | 180               | Niche Product Categories      |
+| Cine Photo                                          | 168               | Niche Product Categories      |
+| Fashion Women's Clothing                            | 162               | Niche Product Categories      |
+| Song                                                | 162               | Niche Product Categories      |
+| Party Articles                                      | 156               | Niche Product Categories      |
+| Fashion Sport                                       | 114               | Rare Product Categories       |
+| Arts and Crafts                                     | 114               | Rare Product Categories       |
+| Flowers                                            | 84                | Rare Product Categories       |
+| Hygiene Diapers                                     | 72                | Rare Product Categories       |
+| La Cuisine                                         | 60                | Rare Product Categories       |
+| Kitchen Portable and Food Coach                    | 60                | Rare Product Categories       |
+| CITTE and Uphack Furniture                         | 60                | Rare Product Categories       |
+| Image Import Tablets                               | 54                | Rare Product Categories       |
+| Fashion Children's Clothing                        | 30                | Rare Product Categories       |
+| House Comfort 2                                     | 30                | Rare Product Categories       |
+| PC Gamer                                           | 18                | Rare Product Categories       |
+| Insurance and Services                             | 12                | Rare Product Categories       |
+| CDs, Music, DVDs                                   | 6                 | Rare Product Categories       |
+| NULL                                               | 0                 | Rare Product Categories       |
+
+This table provides a breakdown of the number of products available in each category.
+
+## Top Product Categories
+| **Product Category**                  | **Number of Products** |
+|---------------------------------------|----------------------|
+| Bed Table Bath                        | 18,174              |
+| Sport Leisure                          | 17,202              |
+| Furniture Decoration                   | 15,942              |
+| Health Beauty                          | 14,664              |
+| Housewares                             | 14,010              |
+| Automotive                             | 11,400              |
+| Computer Accessories                   | 9,834               |
+| Toys                                   | 8,466               |
+| Watches Present                        | 7,974               |
+| Telephony                              | 6,804               |
+
+## Mid-Tier Product Categories
+| **Product Category**                  | **Number of Products** |
+|---------------------------------------|----------------------|
+| Babies                                | 5,514               |
+| Perfumery                             | 5,208               |
+| Fashion Bags and Accessories          | 5,094               |
+| Stationary Store                      | 5,094               |
+| Cool Stuff                            | 4,734               |
+| Garden Tools                          | 4,518               |
+| Pet Shop                              | 4,314               |
+| Electronics                           | 3,102               |
+| Construction Tools (General)          | 2,400               |
+| Home Appliances                       | 2,220               |
+
+## Niche Product Categories
+| **Product Category**                  | **Number of Products** |
+|---------------------------------------|----------------------|
+| Christmas Articles                    | 390                 |
+| Audio                                 | 348                 |
+| Art                                   | 330                 |
+| Fashion Underwear & Beachwear         | 318                 |
+| Blu-ray & DVDs                        | 288                 |
+| Furniture                              | 270                 |
+| Imported Books                         | 186                 |
+| PCs                                   | 180                 |
+| Cine & Photo                          | 168                 |
+| Fashion Women’s Clothing              | 162                 |
+
+## Rare Product Categories
+| **Product Category**                  | **Number of Products** |
+|---------------------------------------|----------------------|
+| Fashion Sport                         | 114                 |
+| Arts and Crafts                       | 114                 |
+| Flowers                               | 84                  |
+| Hygiene Diapers                       | 72                  |
+| La Cuisine                            | 60                  |
+| Kitchen Portable & Food Coach         | 60                  |
+| PC Gamer                              | 18                  |
+| Insurance & Services                  | 12                  |
+| CDs, Music & DVDs                     | 6                   |
+| NULL (No Category)                    | 0                   |
+
+---
+## Key Insights:
+- **Bed, Table, and Bath** is the largest category with **18,174 products**.
+- **Sport Leisure, Furniture Decoration, and Health Beauty** are other major categories.
+- **Niche categories like "PC Gamer" and "Insurance & Services"** have very few products.
+- **NULL category** suggests possible data gaps or missing product classifications.
+---
+---
+## Actionable Recommendations:
+- **Optimize inventory management** for high-volume categories to ensure stock availability.
+- **Enhance visibility of niche categories** through marketing or bundling strategies.
+- **Investigate the NULL category** to correct potential data inconsistencies.
+---
+## Total Categories :
+```sql
+WITH cte AS (
+    SELECT product_category,
+           COUNT(product_category) AS number_of_product_category  
+    FROM products 
+    GROUP BY product_category
+),  
+
+cte2 AS (
+    SELECT product_category, 
+           number_of_product_category, 
+           CASE  
+               WHEN number_of_product_category >= 6000 THEN 'Top Product Categories'  
+               WHEN number_of_product_category >= 1000 THEN 'Mid-Tier Product Categories'  
+               WHEN number_of_product_category >= 115 THEN 'Niche Product Categories'  
+               ELSE 'Rare Product Categories'  
+           END AS Categories  
+    FROM cte   
+)  
+
+SELECT Categories,         
+       COUNT(product_category) AS Total_Categories 
+FROM (  
+    SELECT product_category, 
+           number_of_product_category, 
+           CASE  
+               WHEN number_of_product_category >= 6000 THEN 'Top Product Categories'  
+               WHEN number_of_product_category >= 1000 THEN 'Mid-Tier Product Categories'  
+               WHEN number_of_product_category >= 115 THEN 'Niche Product Categories'  
+               ELSE 'Rare Product Categories'  
+           END AS Categories  
+    FROM cte   
+) AS cte2
+GROUP BY Categories 
+ORDER BY Total_Categories DESC;
+```
+#### Product Category Summary
+
+| Category Type                | Total Categories |
+|------------------------------|------------------|
+| Niche Product Categories     | 32               |
+| Mid-Tier Product Categories  | 18               |
+| Rare Product Categories      | 13               |
+| Top Product Categories       | 10               |
+
+**Top Product Categories** (10 categories) are the highest performing, driving most sales and customer engagement.
+- **Mid-Tier Product Categories** (18 categories) have a moderate presence and contribute consistently but not as significantly as top categories.
+- **Niche Product Categories** (32 categories) cover specialized items, but may represent smaller sales volumes.
+- **Rare Product Categories** (13 categories) represent unique or low-demand items with minimal sales impact.
+
+**Key Takeaway**: Focus efforts on **Top** and **Mid-Tier Product Categories** for higher sales, while maintaining a strategic offering for **Niche** and **Rare Product Categories**.
+
 
 ## List all unique cities where customers are located :
 ```python
@@ -368,6 +737,28 @@ df = pd.DataFrame(data,columns=['UNINIQUE CUSTOMER CITY'])
 
 df.head()
 ```
+### Unique Customer Cities
+
+| City                        |
+|-----------------------------|
+| Franca                      |
+| Sao Bernardo do Campo       |
+| Sao Paulo                   |
+| Mogi das Cruzes             |
+| Campinas                    |
+
+### Unique Customer Cities Analysis
+
+The dataset includes customer locations from several key cities, primarily in the São Paulo region:
+
+- **Franca**: A mid-sized city with a notable customer base.
+- **Sao Bernardo do Campo**: One of the largest cities in the region, contributing to a significant number of customers.
+- **Sao Paulo**: The largest and most populous city in Brazil, likely reflecting the highest concentration of customers.
+- **Mogi das Cruzes**: Another important city in the São Paulo state, contributing to the customer pool.
+- **Campinas**: A key economic hub, also showing a notable presence of customers.
+
+These cities likely represent core markets for the business, with São Paulo being the dominant region.
+
 ## Count the number of orders placed in 2017 :
 ```python
 query = """ select count(order_id) as order_placed 
@@ -382,6 +773,12 @@ df = pd.DataFrame(data , columns=[""" total orders placed in 2017 are """])
 
 df
 ```
+| Total Orders Placed |
+|---------------------|
+| 270,606             |
+
+- In 2017, a total of 270,606 orders were placed. This data highlights the volume of transactions made during the year, providing a baseline for sales performance, trend analysis, and business growth. Comparing this with other years or customer engagement metrics could offer further insights into the company's performance over time.
+
 ## Find the total sales per category :
 ```python
 query = """ 
@@ -391,10 +788,6 @@ FROM products pp
 INNER JOIN order_items oi ON pp.product_id = oi.product_id
 INNER JOIN payments p ON oi.order_id = p.order_id
 GROUP BY pp.product_category;
-
-
-
-
 """
 
 cur.execute(query)
@@ -405,6 +798,17 @@ df = pd.DataFrame(data,columns=['CATEGORY','SALES'])
 
 df
 ```
+| CATEGORY            | SALES         |
+|---------------------|---------------|
+| perfumery           | 76,010,799.0  |
+| Furniture Decoration| 214,526,459.0 |
+| telephony           | 73,032,308.0  |
+| bed table bath      | 256,883,051.0 |
+| automotive          | 127,844,150.0 |
+
+- The sales data reveals that bed table bath has the highest sales at $256.88 million, followed by Furniture Decoration with $214.53 million. The automotive category also has significant sales at $127.84 million. Telephony and perfumery categories have the lowest sales among the listed categories, with $73.03 million and $76.01 million, respectively. This suggests that home and furniture-related products generate the highest sales, while categories like telephony and perfumery contribute less to total sales.
+
+
 ## Calculate the percentage of orders that were paid in installments :
 ```python
 query = """ 
@@ -416,9 +820,6 @@ then 1
 ELSE 0 
 END) ) / count(*) *100 AS PERCENTAGE_INSTALLMENTS
 FROM PAYMENTS;
-
-
-
 """
 
 cur.execute(query)
